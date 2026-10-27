@@ -1,3 +1,5 @@
+// Modified 2026-10-27 by HoshinoYozora (select the VRC7 PRG bank width from the
+// NES 2.0 submapper). See MODIFICATIONS.md and the git history.
 #include "pch.h"
 #include "NES/MapperFactory.h"
 #include "NES/NesConsole.h"

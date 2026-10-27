@@ -1,3 +1,5 @@
+// Modified 2026-10-27 by HoshinoYozora (VRC7-Wide / mapper 85 submapper 2 support).
+// See MODIFICATIONS.md and the git history for details.
 #pragma once
 #include "pch.h"
 #include "NES/BaseMapper.h"

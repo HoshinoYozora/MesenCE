@@ -1,3 +1,5 @@
+// Modified 2026-10-27 by HoshinoYozora (MinGW-w64 has no natupnp.h; see
+// MODIFICATIONS.md).
 #include "pch.h"
 #include "UPnPPortMapper.h"
 

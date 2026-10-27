@@ -1,3 +1,5 @@
+// Modified 2026-10-27 by HoshinoYozora (utf8::decode implemented for all _WIN32
+// compilers; see MODIFICATIONS.md).
 #include "pch.h"
 #include "UTF8Util.h"
 #ifdef __APPLE__

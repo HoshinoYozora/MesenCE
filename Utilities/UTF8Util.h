@@ -1,3 +1,5 @@
+// Modified 2026-10-27 by HoshinoYozora (fstream construction works with
+// non-MSVC compilers; see MODIFICATIONS.md).
 #pragma once
 
 #include <filesystem>
