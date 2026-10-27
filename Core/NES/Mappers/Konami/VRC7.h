@@ -11,7 +11,17 @@ private:
 	unique_ptr<VrcIrq> _irq;
 	uint8_t _controlFlags = 0;
 	uint8_t _chrRegisters[8] = {};
+	uint8_t _prgBankMask = 0x3F;
 
+public:
+	//The stock VRC7 keeps 6 bits in its three switchable PRG bank registers, which
+	//limits the board to 64 x 8 KiB = 512 KiB of PRG ROM. Mapper 85 submapper 2
+	//("VRC7-Wide") keeps 7 bits instead, so 128 x 8 KiB = 1 MiB can be addressed.
+	//Translations that store their engine/text/font data above 512 KiB select banks
+	//with plain byte writes (e.g. `LDA #$41 / STA $9000`) and need this variant.
+	VRC7(uint8_t prgBankMask = 0x3F) : _prgBankMask(prgBankMask) {}
+
+private:
 	void UpdatePrgRamAccess()
 	{
 		SetCpuMemoryMapping(
@@ -87,9 +97,9 @@ protected:
 		}
 
 		switch(addr & 0xF038) {
-			case 0x8000: SelectPrgPage(0, value & 0x3F); break;
-			case 0x8008: SelectPrgPage(1, value & 0x3F); break;
-			case 0x9000: SelectPrgPage(2, value & 0x3F); break;
+			case 0x8000: SelectPrgPage(0, value & _prgBankMask); break;
+			case 0x8008: SelectPrgPage(1, value & _prgBankMask); break;
+			case 0x9000: SelectPrgPage(2, value & _prgBankMask); break;
 
 			case 0x9010:
 			case 0x9030: _audio->WriteReg(addr, value); break;

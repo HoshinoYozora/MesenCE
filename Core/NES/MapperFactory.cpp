@@ -372,7 +372,7 @@ BaseMapper* MapperFactory::GetMapperFromID(RomData& romData)
 		case 80: return new TaitoX1005(false);
 		case 82: return new TaitoX1017();
 		case 83: return new Mapper83();
-		case 85: return new VRC7();
+		case 85: return new VRC7(romData.Info.SubMapperID == 2 ? 0x7F : 0x3F); //submapper 2 = VRC7-Wide (7-bit PRG banks, 1 MiB)
 		case 86: return new JalecoJf13();
 		case 87: return new JalecoJfxx(false);
 		case 88: return new Namco108_88();
