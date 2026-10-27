@@ -1,13 +1,13 @@
 #include "pch.h"
 #include "UPnPPortMapper.h"
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__MINGW32__) //MinGW-w64 has no natupnp.h, use the stub below
 	#include <winsock2.h>
 	#include <natupnp.h>
 	#include <ws2tcpip.h>
 #endif
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(__MINGW32__)
 bool UPnPPortMapper::AddNATPortMapping(uint16_t internalPort, uint16_t externalPort, IPProtocol protocol)
 {
 	bool result = false;

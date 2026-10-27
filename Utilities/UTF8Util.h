@@ -1,5 +1,6 @@
 #pragma once
 
+#include <filesystem>
 #include <fstream>
 
 namespace utf8
@@ -13,20 +14,22 @@ namespace utf8
 	};
 
 #ifdef _WIN32
+	//MinGW-w64 (libstdc++) has no std::ifstream(const std::wstring&) overload; a
+	//std::filesystem::path built from the wide name works on both toolchains.
 	class ifstream : public std::ifstream
 	{
 	public:
-		ifstream(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) : std::ifstream(utf8::decode(_Str), _Mode) {}
+		ifstream(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) : std::ifstream(std::filesystem::path(utf8::decode(_Str)), _Mode) {}
 		ifstream() : std::ifstream() {}
-		void open(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) { std::ifstream::open(utf8::decode(_Str), _Mode); }
+		void open(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) { std::ifstream::open(std::filesystem::path(utf8::decode(_Str)), _Mode); }
 	};
 
 	class ofstream : public std::ofstream
 	{
 	public:
-		ofstream(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) : std::ofstream(utf8::decode(_Str), _Mode) {}
+		ofstream(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) : std::ofstream(std::filesystem::path(utf8::decode(_Str)), _Mode) {}
 		ofstream() : std::ofstream() {}
-		void open(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) { std::ofstream::open(utf8::decode(_Str), _Mode); }
+		void open(const std::string& _Str, ios_base::openmode _Mode = ios_base::in) { std::ofstream::open(std::filesystem::path(utf8::decode(_Str)), _Mode); }
 	};
 #else
 	using std::ifstream;
