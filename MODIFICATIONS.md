@@ -38,7 +38,19 @@ and the portability fixes it requires:
 ## Building
 
 * Windows, Visual Studio 2022/2026: `Mesen.sln`, Release/x64 (upstream path).
-* Windows, no Visual Studio: `python build-mingw.py`, then publish the UI with
-  `dotnet publish UI\UI.csproj -c Release -r win-x64 -p:OptimizeUi=true
-  -p:PublishAot=false -p:SelfContained=false -p:PublishSingleFile=true
-  -p:SolutionDir=<repo>\`.
+* Windows, no Visual Studio: `python build-mingw.py`, copy the resulting
+  `bin/mingw/MesenCore.dll` to `bin/win-x64/Release/`, build once so that
+  `UI/Dependencies.zip` picks up the Skia/HarfBuzz natives, then publish:
+
+  ```
+  dotnet publish UI\UI.csproj -c Release -r win-x64 -p:OptimizeUi=true ^
+    -p:PublishAot=false -p:SelfContained=true -p:PublishSingleFile=true ^
+    -p:EnableCompressionInSingleFile=true -p:DebugType=none ^
+    -p:SolutionDir=<repo>\
+  ```
+
+  `SelfContained=true` matters: a framework-dependent build dies silently on
+  machines without the matching .NET desktop runtime, because the apphost only
+  writes "You must install .NET" to stderr, which nobody sees for a WinExe
+  started from Explorer. The self-contained single file is ~52 MB and needs
+  nothing installed.
